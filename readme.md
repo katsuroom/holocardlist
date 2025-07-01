@@ -4,6 +4,8 @@ Card listing for Hololive OCG, made with React and Material UI.
 
 Card source: https://hololive-official-cardgame.com/cardlist/
 
+![](img/screenshot.png)
+
 ## How to Run
 
 1. `cd client`
