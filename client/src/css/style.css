@@ -1,0 +1,18 @@
+body {
+    font-family: "Roboto";
+    margin: 0;
+}
+
+.bg {
+    position: fixed;
+    width: calc(100% - 24px);
+    height: calc(100% - 24px);
+    top: 12px;
+    left: 12px;
+    background:
+        url("../img/bg_logo.svg") no-repeat center center,
+        url("../img/bg_pre-pc.png") no-repeat top center,
+        url("../img/bg-pc.jpg") no-repeat top center;
+    background-size: auto, cover, cover;
+    z-index: -1;
+}
