@@ -1,6 +1,7 @@
 # Hololive OCG Card List
 
-Card listing for Hololive OCG, made with React and Material UI.
+Card listing for Hololive OCG, made with React and Material UI.  
+Uses the WanaKana.js package to allow for hiragana, katakana, and romaji search entries.
 
 Card source: https://hololive-official-cardgame.com/cardlist/
 

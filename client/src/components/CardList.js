@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Typography, Select, MenuItem, Menu } from "@mui/material";
+import { Box, Button, Typography, Select, MenuItem } from "@mui/material";
+import { toKatakana, toRomaji } from "wanakana";
 
-import Card from "./Card";
 import { OptionRarity } from "../lib/utils";
+import Card from "./Card";
+import PageNav from "./PageNav";
 
 const data = require("../cards.json");
 
 const SortType = {
-    DEFAULT: "DEFAULT",
+    RELEASE: "RELEASE",
     NAME: "NAME",
     RARITY: "RARITY",
     CARDNO: "CARDNO"
@@ -19,14 +21,17 @@ export default function CardList({query}) {
     const hideCards = false;
 
     const [searchResult, setSearchResult] = useState([]);
-    const [sortBy, setSortBy] = useState(SortType.DEFAULT);
+    const [sortBy, setSortBy] = useState(SortType.RELEASE);
     const [pageNum, setPageNum] = useState(1);
     
     const [display, setDisplay] = useState(null);
 
 
     function matchKeywords(query, card) {
-        return query.keywords == "" || card.name.toLowerCase().includes(query.keywords.toLowerCase());
+        let a = toRomaji(toKatakana(card.name).toLowerCase());
+        let b = toRomaji(toKatakana(query.keywords).toLowerCase());
+
+        return query.keywords == "" || a.includes(b);
     }
 
     function matchColor(query, card) {
@@ -82,7 +87,7 @@ export default function CardList({query}) {
         return query.bloomLevels.includes(card.bloom);
     }
 
-    function sortDefault(a, b) {
+    function sortRelease(a, b) {
         return a.id - b.id;
     }
 
@@ -124,7 +129,7 @@ export default function CardList({query}) {
             case SortType.CARDNO:
                 return arr.sort(sortCardNo);
             default:
-                return arr.sort(sortDefault);
+                return arr.sort(sortRelease);
         }
     }
 
@@ -143,6 +148,9 @@ export default function CardList({query}) {
         setSortBy(value);
         setSearchResult(doSort(searchResult, value));
     }
+
+    let pageNav =
+        <PageNav pageNum={pageNum} totalPages={Math.ceil(searchResult.length / pageLimit)} setPageNum={setPageNum}/>;
 
     let imgOverlay =
         <Box
@@ -164,48 +172,30 @@ export default function CardList({query}) {
             </a>
         </Box>;
 
-    let pageNav = 
-        searchResult.length > pageLimit ?
-            <Box sx={{
-                marginBottom: 2,
-                display: "flex",
-                gap: 1
-            }}>
-                {
-                    Array.from({length: Math.ceil(searchResult.length / pageLimit)})
-                        .map((_, index) =>
-                            <Button variant="outlined"
-                                key={index}
-                                sx={{minWidth: 0}}
-                                disabled={index+1 == pageNum}
-                                onClick={() => setPageNum(index+1)}
-                            >
-                                {index+1}
-                            </Button>
-                    )
-                }
-                
-            </Box> : <br />
-
     return (
-        <Box> 
+        <Box
+            sx={{
+                display: "grid",
+                gap: 1
+            }}
+        >
             <Typography sx={{fontSize: 24}}>
-                Result: {searchResult.length == 0 ? 0 :
+                {
+                    searchResult.length == 0 ? 0 :
                     `${(pageNum-1) * pageLimit + 1} – ${Math.min(pageNum * pageLimit, searchResult.length)} of ${searchResult.length}`
                 } cards
             </Typography>
-            <br />
             <Select
                 value={sortBy}
-                sx={{width: "20%", marginBottom: 2}}
+                sx={{width: "20%", marginBottom: 1}}
                 onChange={e => handleSort(e.target.value)}
             >
-                <MenuItem value={SortType.DEFAULT}>Default</MenuItem>
+                <MenuItem value={SortType.RELEASE}>Sort By Release</MenuItem>
                 <MenuItem value={SortType.NAME}>Sort By Name</MenuItem>
                 <MenuItem value={SortType.RARITY}>Sort By Rarity</MenuItem>
                 <MenuItem value={SortType.CARDNO}>Sort By Card No.</MenuItem>
             </Select>
-            
+
             {pageNav}
             
             <Box sx={{
@@ -219,7 +209,6 @@ export default function CardList({query}) {
                     )
                 }
             </Box>
-            <br />
             {pageNav}
             {display != null ? imgOverlay : null}
         </Box>
