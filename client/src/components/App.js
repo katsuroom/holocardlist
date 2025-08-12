@@ -8,7 +8,7 @@ import { OptionLanguage } from "../lib/utils";
 export default function App() {
 
     const [query, setQuery] = useState({
-        language: OptionLanguage.JP,
+        language: OptionLanguage.EN,
         keywords: "",
         colors: [],
         product: "",
