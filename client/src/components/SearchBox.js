@@ -12,7 +12,7 @@ import ButtonGroup from "./ButtonGroup";
 
 import { OptionColor, OptionProduct, OptionCardType, OptionRarity, OptionBloom } from "../lib/utils";
 
-export default function SearchBox({setQuery}) {
+export default function SearchBox({query, setQuery}) {
 
     const [keywords, setKeywords] = useState("");
     const [colors, setColors] = useState([]);
@@ -37,6 +37,7 @@ export default function SearchBox({setQuery}) {
 
     function doSearch() {
         setQuery({
+            ...query,
             keywords: keywords,
             colors: colors,
             product: OptionProduct[product][1],
@@ -133,10 +134,10 @@ export default function SearchBox({setQuery}) {
                     [OptionCardType.ALL, "All"],
                     [OptionCardType.HOLOMEM, "Holomem"],
                     [OptionCardType.BUZZ, "Buzz Holomem"],
-                    [OptionCardType.OSHI, "Oshi Holomem"],
+                    [OptionCardType.OSHI, "Oshi"],
                     [OptionCardType.SUPPORT, "Support"],
                     [OptionCardType.LIMITED, "Limited"],
-                    [OptionCardType.YELL, "Yell"]
+                    [OptionCardType.CHEER, "Cheer"]
                     ]}
                     handleChange={(value) => handleSelector(value, cardTypes, setCardTypes)}
                     values={cardTypes}

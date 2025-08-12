@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Box, Button, Typography, Select, MenuItem } from "@mui/material";
 import { toKatakana, toRomaji } from "wanakana";
 
-import { OptionRarity } from "../lib/utils";
+import { OptionRarity, OptionLanguage } from "../lib/utils";
 import Card from "./Card";
 import PageNav from "./PageNav";
 
-const data = require("../cards.json");
+const cards_jp = require("../cards_jp.json");
+const cards_en = require("../cards_en.json");
 
 const SortType = {
     RELEASE: "RELEASE",
@@ -28,8 +29,16 @@ export default function CardList({query}) {
 
 
     function matchKeywords(query, card) {
-        let a = toRomaji(toKatakana(card.name).toLowerCase());
-        let b = toRomaji(toKatakana(query.keywords).toLowerCase());
+        let a, b;
+
+        if(query.language == OptionLanguage.JP) {
+            a = toRomaji(toKatakana(card.name));
+            b = toRomaji(toKatakana(query.keywords));
+        }
+        else {
+            a = card.name.toLowerCase();
+            b = query.keywords.toLowerCase();
+        }
 
         return query.keywords == "" || a.includes(b);
     }
@@ -109,6 +118,9 @@ export default function CardList({query}) {
     }
 
     function getSearchResult() {
+
+        const data = query.language == OptionLanguage.EN ? cards_en : cards_jp;
+
         return doSort(data.filter(card =>
             matchProduct(query, card) &&
             matchKeywords(query, card) &&
@@ -168,7 +180,10 @@ export default function CardList({query}) {
             onClick={() => setDisplay(null)}
         >
             <a target="_blank" href={`https://hololive-official-cardgame.com/cardlist/?id=${display?.id}`} onClick={(e) => e.stopPropagation()}>
-                <img src={"https://hololive-official-cardgame.com" + display?.img}/>
+                <img src={
+                    (query.language == OptionLanguage.EN ? "https://en.hololive-official-cardgame.com" : "https://hololive-official-cardgame.com")
+                    + display?.img
+                }/>
             </a>
         </Box>;
 
@@ -205,7 +220,7 @@ export default function CardList({query}) {
             }}>
                 {
                     searchResult.slice((pageNum-1) * pageLimit, pageNum * pageLimit).map((card, index) =>
-                        <Card key={index} card={card} setDisplay={() => setDisplay(card)}/>
+                        <Card key={index} card={card} language={query.language} setDisplay={() => setDisplay(card)}/>
                     )
                 }
             </Box>

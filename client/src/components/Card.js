@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography } from "@mui/material";
+import { OptionLanguage } from "../lib/utils";
 
-export default function Card({card, setDisplay}) {
+export default function Card({card, language, setDisplay}) {
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [isHover, setHover] = useState(false);
@@ -47,7 +48,7 @@ export default function Card({card, setDisplay}) {
                 ref={imgRef}
                 style={{width: "100%", visibility: imgRef.current?.complete || isLoaded ? "visible" : "hidden"}}
                 onLoad={handleLoad}
-                src={"https://hololive-official-cardgame.com" + card.img}
+                src={(language == OptionLanguage.EN ? "https://en.hololive-official-cardgame.com" : "https://hololive-official-cardgame.com") + card.img}
             />
 
             {

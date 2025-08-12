@@ -1,3 +1,8 @@
+export const OptionLanguage = {
+    JP: "JP",
+    EN: "EN"
+};
+
 export const OptionColor = {
     ALL: "",
     WHITE: "白",
@@ -10,12 +15,12 @@ export const OptionColor = {
 
 export const OptionCardType = {
     ALL: "",
-    HOLOMEM: "ホロメン",
-    BUZZ: "Buzzホロメン",
-    OSHI: "推しホロメン",
-    SUPPORT: "サポート",
+    HOLOMEM: "holomem",
+    BUZZ: "Buzz holomem",
+    OSHI: "Oshi",
+    SUPPORT: "Support",
     LIMITED: "LIMITED",
-    YELL: "エール"
+    CHEER: "Cheer"
 };
 
 export const OptionRarity = {
@@ -47,7 +52,7 @@ export const OptionProduct = [
     ["All", ""],
     ["Starter Deck: Tokino Sora & AZKi", "hSD01"],
     ["Booster Pack: Blooming Radiance", "hBP01"],
-    ["Starter Yell Set", "hYS01"],
+    ["Starter Cheer Set", "hYS01"],
     ["Promo Cards", "hPR"],
     ["Booster Pack: Quintet Spectrum", "hBP02"],
     ["Starter Deck Red: Nakiri Ayame", "hSD02"],
